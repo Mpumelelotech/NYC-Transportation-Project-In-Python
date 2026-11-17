@@ -1,47 +1,218 @@
-# 🚌 NYC Bus Breakdown & Delay Analysis
-New York City's public bus system experiences thousands of breakdowns and delays annually, disrupting commuters and straining public resources. Driven by curiosity and a passion for problem-solving, I undertook this independent project to explore key patterns, identify root causes, and generate data-driven recommendations aimed at improving service reliability.
+# NYC Bus Breakdown & Delay Analysis
 
-## 📊 Project Overview
+## Project Overview
 
-New York City's public bus system faces thousands of breakdowns and delays each year, causing frustration among commuters and resource strain for the city. As a Data Analyst, my goal was to explore patterns, uncover root causes, and suggest data-driven recommendations that could help reduce disruptions and enhance reliability.
+This project analyzes 282,192 NYC school transportation incident records containing information on bus breakdowns, delays, operators, routes, boroughs, contractor notifications, and student transportation disruptions. The objective was to investigate operational patterns contributing to transportation incidents while transforming a large, imperfect dataset into a reliable analytical resource capable of answering six business questions.
 
-## 🛠️ Tools & Libraries Used
+---
 
-- **Python**
-  - `Pandas` – data cleaning, wrangling, and manipulation
-  - `NumPy` – numerical operations and encoding
-  - `Seaborn` & `Matplotlib` – data visualization
-  - `SciPy` – statistical testing (Chi-square test)
+## Dataset Information
 
-## 🔍 Key Questions Explored
+| Metric | Value |
+| --- | --- |
+| Records | 282,192 |
+| Variables | 21 |
+| Time Coverage | 2019–2023 |
+| Incident Types | Breakdowns and Running Late |
+| Tools | Python, Pandas, NumPy, Matplotlib, Seaborn, SciPy |
 
-1. **What are the most common reasons for delays and breakdowns?**
-2. **How do delay times vary by bus company and borough?**
-3. **Is there a correlation between specific days of the week and service disruptions?**
-4. **Are certain routes more prone to delays or breakdowns?**
-5. **Does the number of students onboard affect delays or breakdowns?**
-6. **Do contractor notifications influence how long delays last?**
+---
 
-## 📈 Highlights & Findings
+## Business Questions
 
-- **Top Cause of Breakdowns:** Mechanical issues, occurring 10,399 times — **3.5× more frequently** than the next most common issue (“Won’t Start”).
-- **Delay Distribution by Company:** Companies like *Leesel Transportation Corp* and *Pioneer Transportation Corp* repeatedly showed up across multiple delay-duration categories.
-- **Borough-Based Delay Trends:**
-  - **Bronx** had the highest count of short-term delays (0–15 min).
-  - **Manhattan** reported the most medium to long delays (31–60+ min).
-- **Chi-Square Test:** While the day of the week showed a statistically significant link with disruptions (p < 0.001), the effect size (Cramer's V = 0.013) was negligible — suggesting weekday isn't a strong predictor.
-- **Route-Level Issues:** Certain routes (e.g., Route 2) were repeatedly flagged as high-risk for delays.
+The analysis focused on the following questions:
 
-## 🧹 Data Cleaning & Processing
+1. What are the most common reasons for delays and breakdowns?
+2. How do delay times vary by bus company and borough?
+3. Is there a relationship between weekdays and transportation disruptions?
+4. Are certain routes more prone to delays or breakdowns?
+5. Is there a relationship between the number of students on a bus and transportation disruptions?
+6. Do contractor notification practices affect transportation outcomes?
 
-- Removed duplicates and high-null columns (e.g., `Incident_Number`)
-- Imputed missing values using **mode** (categorical) and **median** (numerical)
-- Standardized inconsistent company names using a custom mapping dictionary
-- Encoded weekdays numerically and created new time-based features
+---
 
-## 💡 Recommendations
+# Technical Workflow
 
-- **Implement mandatory service checks** every 3 months, with targeted attention to frequently reported mechanical issues.
-- **Deploy route-specific strategies** for high-risk areas such as the Bronx and Manhattan.
-- **Launch driver surveys** at companies with repeated long delays to identify operational inefficiencies beyond traffic.
+## 1\. Data Understanding
+
+Before cleaning, the dataset was profiled to assess:
+
+- Dataset dimensions and coverage period
+- Data types
+- Missing\-value distribution
+- Numerical distributions
+- Extreme values and potential outliers
+- Variable suitability for each business question
+
+### Initial Findings
+
+Several quality issues were identified:
+
+- Nearly 100% missing values in Incident\_Number
+- Missing values across multiple columns
+- Inconsistent operator naming conventions
+- Non\-standardized delay\-duration categories
+- Potential anomalies in student\-count values
+
+---
+
+## 2\. Business Question Mapping
+
+Before conducting analysis, each business question was mapped to the specific columns required to answer it. This ensured that data preparation activities remained aligned with the project's analytical objectives and prevented unnecessary transformations.
+
+---
+
+## 3\. Data Preparation
+
+### Duplicate Validation
+
+- Checked for duplicate observations.
+- Removed duplicate records where necessary.
+
+### Missing Value Treatment
+
+- Assessed null counts and null percentages.
+- Removed Incident\_Number due to excessive missingness.
+- Imputed How\_Long\_Delayed using the modal category.
+- Applied median or mode imputation to low\-missingness variables based on data type.
+
+### Delay Duration Standardization
+
+- Removed inconsistent text formatting.
+- Standardized delay categories.
+- Removed unnecessary characters and spacing.
+- Produced consistent duration ranges for analysis.
+
+### Category Standardization
+
+- Simplified delay and breakdown reasons.
+- Standardized incident classifications.
+- Improved reporting and visualization consistency.
+
+### Bus Company Name Reconciliation
+
+- Audited all unique operator names.
+- Identified naming variations for the same companies.
+- Created standardized company identifiers.
+- Built mapping dictionaries for reconciliation.
+- Removed punctuation and formatting inconsistencies.
+
+### Feature Engineering
+
+- Extracted weekdays from timestamps.
+- Created numerical weekday encodings.
+- Generated analysis\-specific datasets for operators, boroughs, routes, notifications, and student\-count investigations.
+
+### Iterative Data Preparation
+
+Data preparation was not performed once at the start of the project. Additional validation, cleaning, standardization, and restructuring were performed throughout the analysis as new business questions required different analytical datasets and quality checks.
+
+---
+
+## 4\. Analysis and Statistical Methods
+
+Techniques used during the project included:
+
+- Exploratory Data Analysis (EDA)
+- Frequency Analysis
+- Descriptive Statistics
+- Comparative Analysis
+- Distribution Analysis
+- Chi\-Square Test of Independence
+- Cramer's V Association Analysis
+- Outlier Investigation
+- Data Visualization
+
+---
+
+## Key Findings
+
+### Delays and Breakdowns
+
+- Traffic was the leading cause of reported delays.
+- Mechanical problems were the most common cause of breakdowns.
+
+### Operator Performance
+
+- Several transportation operators consistently appeared among the highest\-delay providers across multiple delay\-duration categories.
+
+### Borough Analysis
+
+- Manhattan, Brooklyn, and Queens experienced consistently high delay frequencies.
+- The Bronx exhibited particularly high concentrations of shorter\-duration delays.
+
+### Route Analysis
+
+- Delay incidents were concentrated among a relatively small subset of routes.
+- Breakdown incidents were more evenly distributed across routes.
+
+### Weekday Analysis
+
+- A statistically significant relationship between weekday and transportation disruptions was detected.
+- However, Cramer's V indicated that the practical strength of this relationship was extremely weak.
+
+### Student Count Investigation
+
+- The student\-count variable contained substantial outliers and highly skewed values.
+- Due to limited documentation and data\-quality concerns, reliable conclusions could not be drawn regarding the relationship between student counts and transportation disruptions.
+
+### Notification Analysis
+
+- School notifications were the most common communication practice.
+- Parent notifications occurred less frequently.
+- OPT notifications were reported least frequently.
+
+---
+
+## Challenges Encountered
+
+- Extensive missing data.
+- Inconsistent company naming conventions.
+- Non\-standardized categorical values.
+- Delay\-duration formatting inconsistencies.
+- Student\-count outliers and questionable observations.
+- Multiple rounds of cleaning required as new analytical questions emerged.
+
+---
+
+## Skills Demonstrated
+
+### Data Preparation
+
+- Data Cleaning
+- Data Validation
+- Missing Value Treatment
+- Data Standardization
+- Feature Engineering
+- Data Quality Assessment
+
+### Analysis
+
+- Exploratory Data Analysis (EDA)
+- Statistical Testing
+- Pattern Discovery
+- Comparative Analysis
+
+### Visualization
+
+- Matplotlib
+- Seaborn
+- Data Storytelling
+
+### Programming
+
+- Python
+- Pandas
+- NumPy
+- SciPy
+
+---
+
+## Project Outcome
+
+The project transformed a raw operational dataset into an analysis\-ready resource capable of answering six transportation\-focused business questions. Through extensive data preparation, exploratory analysis, statistical testing, and business interpretation, the analysis identified key drivers of delays and breakdowns while highlighting operational areas that may benefit from targeted investigation and reliability improvements.
+
+---
+
+**Next Step:** Open the notebook to review the complete methodology, code implementation, visualizations, statistical testing, and detailed findings.
 
